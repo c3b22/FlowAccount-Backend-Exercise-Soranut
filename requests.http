@@ -1,0 +1,42 @@
+### ลองยิง API ได้จาก VS Code (ส่วนเสริม REST Client) หรือ IntelliJ IDEA
+### รัน API ก่อน:  ./mvnw spring-boot:run
+@host = http://localhost:8080
+
+### 1) เพิ่มสินค้า
+POST {{host}}/api/products
+Content-Type: application/json
+
+{ "name": "ข้าวผัด", "sku": "FOOD001", "price": 45.00, "stock": 20, "category": "อาหาร" }
+
+### 1) เพิ่มสินค้า — ข้อมูลไม่ถูกต้อง (ได้ 400 พร้อม errors)
+POST {{host}}/api/products
+Content-Type: application/json
+
+{ "name": "", "sku": "AB", "price": 0, "stock": -1, "category": "ยา" }
+
+### 2) ดึงสินค้าทั้งหมด
+GET {{host}}/api/products
+
+### 2) ดึงสินค้าตามหมวดหมู่
+GET {{host}}/api/products?category=อาหาร
+
+### 3) ขายสินค้า (ตัดสต็อก)
+POST {{host}}/api/products/sell
+Content-Type: application/json
+
+{ "productId": 1, "quantity": 5 }
+
+### 4) ค้นหาสินค้า (name หรือ sku, ไม่สนตัวพิมพ์เล็ก-ใหญ่)
+GET {{host}}/api/products/search?keyword=ข้าว
+
+### 4) ค้นหาด้วย sku
+GET {{host}}/api/products/search?keyword=food
+
+### 5) อัพเดทราคาเป็นชุด
+PUT {{host}}/api/products/bulk-price-update
+Content-Type: application/json
+
+[
+  { "productId": 1, "newPrice": 50.00 },
+  { "productId": 999, "newPrice": 10.00 }
+]
